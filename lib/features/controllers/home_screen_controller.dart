@@ -4,7 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/repositories/auth_repository.dart';
 import '../../core/services/supabase_service.dart';
-import '../components/common/my_appbar.dart';
+import '../components/common/appbar.dart';
+import '../components/common/appbar_actions.dart';
 import '../components/common/bottom_navigation_bar.dart'; // Import the bottom navigation bar component
 import '../screens/home/home_screen.dart';
 import '../screens/home/settings_screen.dart';
@@ -19,6 +20,7 @@ class HomeScreenController extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenControllerState extends ConsumerState<HomeScreenController> {
+  final authRepository = AuthRepository(SupabaseService.client);
   int _selectedIndex = 0;
 
   final _widgetOptions = <Widget>[
@@ -39,6 +41,16 @@ class _HomeScreenControllerState extends ConsumerState<HomeScreenController> {
         : _selectedIndex == 1
         ? "Profile"
         : "Settings";
+  }
+
+  void _logout() async {
+    // Show loading indicator
+    _loading(context);
+    // Sign out and Navigate to login screen
+    await authRepository.signOut();
+    context.go('/');
+    // Show snackbar
+    _snackbar(context);
   }
 
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _snackbar(
@@ -69,27 +81,10 @@ class _HomeScreenControllerState extends ConsumerState<HomeScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    final authRepository = AuthRepository(SupabaseService.client);
     return Scaffold(
       appBar: MyAppbar(
         title: Text(_title()),
-        actions:
-            _title() == "Settings"
-                ? [
-                  IconButton(
-                    icon: const Icon(Icons.logout),
-                    onPressed: () async {
-                      // Show loading indicator
-                      _loading(context);
-                      // Sign out and Navigate to login screen
-                      await authRepository.signOut();
-                      context.go('/');
-                      // Show snackbar
-                      _snackbar(context);
-                    },
-                  ),
-                ]
-                : null,
+        actions: [AppBarActions(title: _title(), onLogout: _logout)],
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: HomeBottomNavigationBar(
