@@ -36,3 +36,6 @@ This project uses the `flutter_dotenv` package to manage environment variables, 
 
 ## Contribution Stats ##
 ![Alt](https://repobeats.axiom.co/api/embed/17352fa024a29e62426902a8830a3a17cbb7b80b.svg "Repobeats analytics image")
+
+## License
+This project is open-source and is distributed under the [Apache License 2.0](LICENSE). See the `LICENSE` file for details.
