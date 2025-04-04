@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/repositories/auth_repository.dart';
 import '../../../core/services/supabase_service.dart';
 
@@ -9,22 +10,15 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authRepository = AuthRepository(SupabaseService.client);
     final user = authRepository.currentUser;
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('Welcome ${user?.email ?? 'User'}'),
-          Text('Home Screen Content'),
-          SizedBox(height: 20),
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     final authRepository = AuthRepository(SupabaseService.client);
-          //     await authRepository.signOut();
-          //     context.go('/');
-          //   },
-          //   child: const Text('Sign Out'),
-          // ),
-        ],
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('You logged in as ${user?.email ?? 'User'}'),
+            const Text('Home Screen Content'),
+          ],
+        ),
       ),
     );
   }
