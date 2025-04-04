@@ -33,3 +33,6 @@ This project uses the `flutter_dotenv` package to manage environment variables, 
 3.  **Populate with your Supabase credentials:**  Replace the placeholders for `SUPABASE_URL` and `SUPABASE_ANON_KEY` in the `.env` file. You can find these credentials in your Supabase project dashboard under Settings -> API.
 
 4. **Run the app:**  Run your Flutter app. The `flutter_dotenv` package will automatically load the environment variables from the `.env` file.
+
+## Contribution Stats ##
+![Alt](https://repobeats.axiom.co/api/embed/17352fa024a29e62426902a8830a3a17cbb7b80b.svg "Repobeats analytics image")
