@@ -2,17 +2,17 @@
 
 import 'package:flutter/material.dart';
 
-class MyTextField extends StatelessWidget {
+class AuthTextField extends StatelessWidget {
   final String label;
   final String? hintText;
   final bool obscureText;
-  final Icon? suffixIcon;
+  final Widget? suffixIcon;
   final Color? suffixIconColor;
   final Icon? prefixIcon;
   final Color? prefixIconColor;
   final TextEditingController? controller;
 
-  const MyTextField({
+  const AuthTextField({
     super.key,
     required this.label,
     this.hintText,
@@ -31,16 +31,17 @@ class MyTextField extends StatelessWidget {
       controller: controller,
       style: TextStyle(color: Theme.of(context).colorScheme.primary),
       decoration: InputDecoration(
-        suffixIcon: suffixIcon,
-        suffixIconColor: suffixIconColor,
         labelText: label,
         labelStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+        floatingLabelStyle: TextStyle(fontSize: 20),
+        prefixIcon: prefixIcon,
+        prefixIconColor: prefixIconColor,
+        suffixIcon: suffixIcon,
+        suffixIconColor: suffixIconColor,
         hintText: hintText,
         hintStyle: TextStyle(
           color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
         ),
-        prefixIcon: prefixIcon,
-        prefixIconColor: prefixIconColor,
         fillColor: Theme.of(context).colorScheme.surface,
         filled: true,
         enabledBorder: OutlineInputBorder(

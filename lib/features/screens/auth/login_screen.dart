@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/repositories/auth_repository.dart';
 import '../../../core/services/supabase_service.dart';
 import '../../components/auth/auth_button.dart';
-import '../../components/auth/text_field.dart';
+import '../../components/auth/auth_textfield.dart';
 
 enum SnackBarType { error, success, info }
 
@@ -19,12 +19,19 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _obscureText = true;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _obscureText = false;
   }
 
   // Snackbar
@@ -133,18 +140,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: 45),
 
                 // email textfield,
-                MyTextField(
-                  hintText: "Email",
+                AuthTextField(
+                  prefixIcon: Icon(Icons.email_rounded),
+                  label: "Email",
                   obscureText: false,
                   controller: _emailController,
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
 
                 // passowrd textfield,
-                MyTextField(
-                  hintText: "Password",
-                  obscureText: true,
+                AuthTextField(
+                  prefixIcon: Icon(Icons.lock),
+                  label: "Password",
+                  obscureText: _obscureText,
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.remove_red_eye),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
                   controller: _passwordController,
                 ),
 

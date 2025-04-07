@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/repositories/auth_repository.dart';
 import '../../../core/services/supabase_service.dart';
 import '../../components/auth/auth_button.dart';
-import '../../components/auth/text_field.dart';
+import '../../components/auth/auth_textfield.dart';
 
 enum SnackBarType { error, success, info }
 
@@ -139,35 +139,43 @@ class RegisterScreenpScreenState extends ConsumerState<RegisterScreen> {
                 const SizedBox(height: 45),
 
                 // username textfield,
-                MyTextField(
-                  hintText: "Username",
+                AuthTextField(
+                  prefixIcon: Icon(Icons.person_outline),
+                  label: "Username",
+                  hintText: "Your username",
                   obscureText: false,
                   controller: _usernameController,
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
 
                 // email textfield,
-                MyTextField(
-                  hintText: "Email",
+                AuthTextField(
+                  prefixIcon: Icon(Icons.email_outlined),
+                  label: "Email",
+                  hintText: "your-username@email.com",
                   obscureText: false,
                   controller: _emailController,
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
 
                 // passowrd textfield,
-                MyTextField(
-                  hintText: "Password",
+                AuthTextField(
+                  prefixIcon: Icon(Icons.lock_outlined),
+                  label: "Password",
+                  hintText: "8-12 characters",
                   obscureText: true,
                   controller: _passwordController,
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
 
                 // confirm passowrd textfield,
-                MyTextField(
-                  hintText: "Confirm Password",
+                AuthTextField(
+                  prefixIcon: Icon(Icons.lock_clock_outlined),
+                  label: "Confirm Password",
+                  hintText: "Enter your Password Again",
                   obscureText: true,
                   controller: _confirmPasswordController,
                 ),
