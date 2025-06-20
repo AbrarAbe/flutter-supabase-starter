@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../core/repositories/auth_repository.dart';
 import '../../../core/services/supabase_service.dart';
 import '../../components/auth/auth_button.dart';
 import '../../components/auth/auth_textfield.dart';
-
-enum SnackBarType { error, success, info }
+import '../../components/common/snackbar.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   final void Function()? onTap;
@@ -19,7 +19,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _obscureText = true;
+  bool _obscureText = false;
 
   @override
   void dispose() {
@@ -31,27 +31,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _obscureText = false;
-  }
-
-  // Snackbar
-  SnackBar floatingSnackBar(String content, SnackBarType snackBarType) {
-    final backgroundColor = switch (snackBarType) {
-      SnackBarType.error => Colors.red,
-      SnackBarType.success => Colors.green,
-      SnackBarType.info => Colors.blue,
-    };
-    return SnackBar(
-      content: Text(content),
-      behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.all(25),
-      showCloseIcon: true,
-      elevation: 1,
-      duration: const Duration(seconds: 3),
-      dismissDirection: DismissDirection.horizontal,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      backgroundColor: backgroundColor,
-    );
+    _obscureText = true;
   }
 
   // Loading circle
@@ -70,7 +50,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        floatingSnackBar('Please fill all fields', SnackBarType.error),
+        mySnackBar(
+          context: context,
+          content: 'Please fill all fields',
+          snackBarType: SnackBarType.error,
+        ),
       );
       return;
     }
@@ -87,18 +71,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (user != null) {
         // Navigate to home screen
         context.go('/home');
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(floatingSnackBar('Login Success', SnackBarType.success));
+        ScaffoldMessenger.of(context).showSnackBar(
+          mySnackBar(
+            context: context,
+            content: 'Login Success',
+            snackBarType: SnackBarType.success,
+          ),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          floatingSnackBar('Invalid credentials', SnackBarType.error),
+          mySnackBar(
+            context: context,
+            content: 'Invalid credentials',
+            snackBarType: SnackBarType.error,
+          ),
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(floatingSnackBar('An error occurred', SnackBarType.error));
+      ScaffoldMessenger.of(context).showSnackBar(
+        mySnackBar(
+          context: context,
+          content: 'An error occurred',
+          snackBarType: SnackBarType.error,
+        ),
+      );
     } finally {
       if (mounted) {
         Navigator.of(context).pop();

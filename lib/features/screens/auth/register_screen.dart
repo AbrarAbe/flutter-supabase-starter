@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../core/repositories/auth_repository.dart';
 import '../../../core/services/supabase_service.dart';
 import '../../components/auth/auth_button.dart';
 import '../../components/auth/auth_textfield.dart';
-
-enum SnackBarType { error, success, info }
+import '../../components/common/snackbar.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   final void Function()? onTap;
@@ -31,25 +31,6 @@ class RegisterScreenpScreenState extends ConsumerState<RegisterScreen> {
     super.dispose();
   }
 
-  SnackBar floatingSnackBar(String content, SnackBarType snackBarType) {
-    final backgroundColor = switch (snackBarType) {
-      SnackBarType.error => Colors.red,
-      SnackBarType.success => Colors.green,
-      SnackBarType.info => Colors.blue,
-    };
-    return SnackBar(
-      content: Text(content),
-      behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.all(25),
-      showCloseIcon: true,
-      elevation: 1,
-      duration: const Duration(seconds: 3),
-      dismissDirection: DismissDirection.horizontal,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      backgroundColor: backgroundColor,
-    );
-  }
-
   // Loading circle
   Future<dynamic> _loading() {
     return showDialog(
@@ -71,14 +52,22 @@ class RegisterScreenpScreenState extends ConsumerState<RegisterScreen> {
         username.isEmpty ||
         confirmPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        floatingSnackBar('Please fill all fields', SnackBarType.error),
+        mySnackBar(
+          context: context,
+          content: 'Please fill all fields',
+          snackBarType: SnackBarType.error,
+        ),
       );
       return;
     }
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        floatingSnackBar('Passwords do not match', SnackBarType.error),
+        mySnackBar(
+          context: context,
+          content: 'Passwords do not match',
+          snackBarType: SnackBarType.error,
+        ),
       );
       return;
     }
@@ -90,7 +79,11 @@ class RegisterScreenpScreenState extends ConsumerState<RegisterScreen> {
       await authRepository.signUpWithEmailAndPassword(email, password);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          floatingSnackBar('Successfully signed up', SnackBarType.success),
+          mySnackBar(
+            context: context,
+            content: 'Successfully signed up',
+            snackBarType: SnackBarType.success,
+          ),
         );
         Navigator.of(context).pop();
         context.go('/home');
@@ -98,9 +91,13 @@ class RegisterScreenpScreenState extends ConsumerState<RegisterScreen> {
     } catch (e) {
       if (context.mounted) {
         Navigator.of(context).pop();
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(floatingSnackBar(e.toString(), SnackBarType.error));
+        ScaffoldMessenger.of(context).showSnackBar(
+          mySnackBar(
+            context: context,
+            content: e.toString(),
+            snackBarType: SnackBarType.error,
+          ),
+        );
       }
     }
   }
