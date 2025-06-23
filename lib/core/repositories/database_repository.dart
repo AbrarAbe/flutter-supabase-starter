@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../models/user_model.dart';
 
 class DatabaseRepository {
@@ -6,13 +7,14 @@ class DatabaseRepository {
 
   DatabaseRepository(this._supabaseClient);
 
-  Future<UserModel?> fetchUser(String userId) async {
+  Future<UserModel?> fetchProfile(String userId) async {
     try {
-      final response = await _supabaseClient
-          .from('users')
-          .select()
-          .eq('id', userId)
-          .single();
+      final response =
+          await _supabaseClient
+              .from('profiles')
+              .select()
+              .eq('id', userId)
+              .single();
       return UserModel.fromJson(response);
     } catch (e) {
       // print('Error fetching user: $e');
@@ -20,11 +22,27 @@ class DatabaseRepository {
     }
   }
 
-  Future<void> createUser(UserModel user) async {
+  Future<UserModel?> createProfile({
+    required String userId,
+    required String username,
+    String? profilePicUrl,
+  }) async {
     try {
-      await _supabaseClient.from('users').insert(user.toJson());
+      final response =
+          await _supabaseClient
+              .from('profiles')
+              .insert({
+                'id': userId,
+                'username': username,
+                'profile_picture_url': profilePicUrl,
+              })
+              .select() // Select the data that was inserted
+              .single(); // Expecting a single row back
+      // Parse the inserted data into a UserModel
+      return UserModel.fromJson(response);
     } catch (e) {
-      // print('Error creating user: $e');
+      // print('Error creating profile: $e');
+      return null;
     }
   }
 }
