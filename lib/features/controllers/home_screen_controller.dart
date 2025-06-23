@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/repositories/auth_repository.dart';
+import '../../core/repositories/database_repository.dart';
 import '../../core/services/supabase_service.dart';
 import '../components/common/appbar.dart';
 import '../components/common/appbar_actions.dart';
@@ -21,10 +22,14 @@ class HomeScreenController extends ConsumerStatefulWidget {
 
 class _HomeScreenControllerState extends ConsumerState<HomeScreenController> {
   final authRepository = AuthRepository(SupabaseService.client);
+  final databaseRepository = DatabaseRepository(SupabaseService.client);
   int _selectedIndex = 0;
 
-  final _widgetOptions = <Widget>[
-    const HomeScreen(),
+  List<Widget> get _widgetOptions => <Widget>[
+    HomeScreen(
+      authRepository: authRepository,
+      databaseRepository: databaseRepository,
+    ),
     const ProfileScreen(),
     const SettingsScreen(),
   ];
