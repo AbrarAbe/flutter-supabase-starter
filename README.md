@@ -112,7 +112,7 @@ We welcome contributions to the **Flutter Supabase Starter** project! While we d
 
 We appreciate your help in making this starter even better!
 
-## Contribution Stats ##
+## Contribution Stats 📈
 ![Alt](https://repobeats.axiom.co/api/embed/17352fa024a29e62426902a8830a3a17cbb7b80b.svg "Repobeats analytics image")
 
 ## License 📄
@@ -121,4 +121,4 @@ This project is open-source and is distributed under the `Apache 2.0 License`. S
 
 ## Contact 📧
 
-For any questions or support, please open an issue on the [GitHub repository](https://github.com/AbrarAbe/flutter-supabase-starter).
+For any questions or support, please open an issue on the [GitHub Issues](https://github.com/AbrarAbe/flutter-supabase-starter/issues).
